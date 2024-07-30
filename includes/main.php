@@ -84,7 +84,7 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
         $user = $out->getUser();
         $pathImport = $services->getUserOptionsLookup()->getOption($user, 'path-import');
         $configImport = [
-            'proxi' => 1,
+            'proxi' => $pathImport,
         ];
         switch ($pathImport) {
             case 0:
