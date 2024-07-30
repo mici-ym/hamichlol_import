@@ -1,0 +1,50 @@
+{
+  "manifest_version": 2,
+  "name": "hamichlol_import",
+  "version": "0.1",
+  "url": "https://www.hamichlol.org.il/w/project:hamichlol_import",
+  "author": "[https://www.hamichlol.org.il/U:מוטי מוטי]",
+  "descriptionmsg": "hamichlol_import-desc",
+  "license-name": "GPL-3.0-or-later",
+  "type": "other",
+  "requires": {
+    "MediaWiki": ">= 1.40.3"
+  },
+  "MessagesDirs": {
+    "hamichlol_import": ["i18n"]
+  },
+  "AutoloadNamespaces": {
+    "MediaWiki\\Extension\\hamichlol_import\\": "includes/"
+  },
+  "Hooks": {
+    "GetPreferences": "main",
+    "ParserFirstCallInit": "main",
+    "BeforePageDisplay": "main"
+    },
+  "HookHandlers": {
+    "main": {
+      "class": "MediaWiki\\Extension\\hamichlol_import\\main"
+    }
+  },
+  "AvailableRights": ["wikiImport", "wikiUpdate"],
+  "GroupPermissions": {
+    "sysop": {
+      "wikiImport": true,
+      "wikiUpdate": true
+    },
+    "aspaklaryaEditor": {
+      "wikiImport": true,
+      "wikiUpdate": true
+    },
+    "wikiUpdate": {
+      "wikiUpdate": true,
+      "wikiImport": true
+    },
+    "wikiImport": {
+      "wikiImport": true
+    }
+  },
+  "DefaultUserOptions": {
+    "path-import": 1
+  }
+}
