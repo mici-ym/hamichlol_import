@@ -95,7 +95,7 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
                 break;
             case 2:
                 if ($user->isAllowed('aspaklarya')) {
-                    $configImport['path'] = '/import.getWiki1/';
+                    $configImport['path'] = '/import/get_Wik1i.php';
                 } else {
                     $configImport['path'] = 'https://import.hamichlol.org.il/';
                 }
