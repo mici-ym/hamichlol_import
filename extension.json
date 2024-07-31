@@ -18,7 +18,6 @@
   },
   "Hooks": {
     "GetPreferences": "main",
-    "ParserFirstCallInit": "main",
     "BeforePageDisplay": "main"
     },
   "HookHandlers": {
