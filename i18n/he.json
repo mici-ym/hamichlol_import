@@ -4,5 +4,11 @@
             "moti"
         ]
     },
-    "hamichlol_import": "הרחבת לייבוא מוויקיפדיה העברית."
+    "hamichlol_import": "הרחבה לייבוא מוויקיפדיה העברית.",
+    "Prefs-importAndUpdate": "ייבוא ועדכון",
+    "Prefs-config": "הגדרות כלליות",
+    "Path-of-requests": "נתיב לשאילתות בוויקיפדיה העברית",
+    "Get-from-wikipedia": "גישה ישירה",
+    "Get-from-proxi": "שרת עוקף (פרוקסי)",
+    "Get-from-filter-bypass": "עוקף סינון"
 }

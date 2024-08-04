@@ -4,7 +4,7 @@ namespace MediaWiki\Extension\hamichlol_import;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
-use MediaWiki\Output\Hook\BeforePageDisplayHook;
+use MediaWiki\Hook\BeforePageDisplayHook;
 
 
 
@@ -14,19 +14,19 @@ class main implements GetPreferencesHook, BeforePageDisplayHook
     public function onGetPreferences($user, &$preferences)
     {
         $options = [
-            'wikipedia' => 0,
-            'proxi' => 1,
+            'get-from-wikipedia' => 0,
+            'get-from-proxi' => 1,
         ];
         if ($user->isAllowed('delete') && $user->isAllowed('aspaklarya')) {
-            $options = array_merge($options, ['filter-bypass' => 2]);
+            $options['get-from-filter-bypass'] = 2;
         }
 
         $preferences['path-import'] = [
             'type' => 'radio',
-            'label-message' => 'path-of-Filter-bypass',
-            'help-message' => 'path-of-Filter-bypass-help',
+            'label-message' => 'path-of-requests',
+            'help-message' => 'path-of-requests-help',
             'options-messages' => $options,
-            'section' => 'importAndUpdate/settings',
+            'section' => 'importAndUpdate/config',
         ];
     }
 
