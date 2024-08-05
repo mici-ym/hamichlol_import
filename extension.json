@@ -13,12 +13,16 @@
   "MessagesDirs": {
     "hamichlol_import": ["i18n"]
   },
+  "ExtensionMessagesFiles": {
+    "hamichlol_importMagicWords": "hamichlol_import.i18n.magic.php"
+  },
   "AutoloadNamespaces": {
     "MediaWiki\\Extension\\hamichlol_import\\": "includes/"
   },
   "Hooks": {
     "GetPreferences": "main",
-    "BeforePageDisplay": "main"
+    "BeforePageDisplay": "main",
+    "ParserFirstCallInit": "main"
     },
   "HookHandlers": {
     "main": {

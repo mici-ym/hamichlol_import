@@ -5,10 +5,12 @@ namespace MediaWiki\Extension\hamichlol_import;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\Hook\BeforePageDisplayHook;
+use MediaWiki\Hook\ParserFirstCallInitHook;
+use Parser;
 
+use function PHPSTORM_META\type;
 
-
-class main implements GetPreferencesHook, BeforePageDisplayHook
+class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCallInitHook
 {
 
     public function onGetPreferences($user, &$preferences)
@@ -30,6 +32,30 @@ class main implements GetPreferencesHook, BeforePageDisplayHook
         ];
     }
 
+    public function onParserFirstCallInit($parser)
+    {
+        $parser->setFunctionHook('sortwikipedia', [$this, 'renderWikipediaData']);
+        return true;
+    }
+
+    public function renderWikipediaData(Parser $parser, $title, $revid)
+    {
+        wfDebugLog('hamichlol_import', 'Rendering wikipedia data for ' . $title . ' rev ' . $revid);
+        $output = $parser->getOutput();
+        if (!$title) {
+            return true;
+        }
+        $output->setPageProperty('wikipediaName', $title);
+        $wikipediaData = [
+            'name' => $title,
+        ];
+        if ($revid && is_numeric($revid)) {
+            $wikipediaData['revupdate'] = $revid;
+        }
+        wfDebugLog('hamichlol_import', 'Wikipedia data: ' . print_r($wikipediaData, true));
+        $output->setExtensionData('wikipediaData', $wikipediaData);
+        return true;
+    }
     public function onBeforePageDisplay($out, $skin): void
     {
         $services = MediaWikiServices::getInstance();
@@ -59,5 +85,11 @@ class main implements GetPreferencesHook, BeforePageDisplayHook
         }
 
         $out->addJsConfigVars('importConfig', $configImport);
+
+        $wikipediaName = $skin->getOutput()->getProperty('wikipediaName');
+        if ($wikipediaName) {
+            $out->addJsConfigVars('importConfig', ['nameOfWikipedia' => $wikipediaName]);
+        }
+        wfDebugLog('hamichlol_import', 'Config Import: '.$wikipediaName);
     }
 }
