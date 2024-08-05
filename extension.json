@@ -25,7 +25,7 @@
       "class": "MediaWiki\\Extension\\hamichlol_import\\main"
     }
   },
-  "AvailableRights": ["wikiImport", "wikiUpdate"],
+  "AvailableRights": ["importer", "updater"],
   "GroupPermissions": {
     "sysop": {
       "wikiImport": true,
@@ -35,11 +35,11 @@
       "wikiImport": true,
       "wikiUpdate": true
     },
-    "wikiUpdate": {
+    "updater": {
       "wikiUpdate": true,
       "wikiImport": true
     },
-    "wikiImport": {
+    "importer": {
       "wikiImport": true
     }
   },
