@@ -20,7 +20,7 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
             'get-from-wikipedia' => 0,
             'get-from-proxi' => 1,
         ];
-        if ($user->isAllowed('delete') && $user->isAllowed('aspaklarya')) {
+        if ($user->isAllowed('delete') && $user->isAllowed('aspaklarya_lockdown')) {
             $options['get-from-filter-bypass'] = 2;
         }
 
@@ -65,7 +65,7 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
                 $configImport['path'] = 'https://import.hamichlol.org.il/';
                 break;
             case 2:
-                if ($user->isAllowed('aspaklarya')) {
+                if ($user->isAllowed('aspaklarya_lockdown')) {
                     $configImport['path'] = '/import/get_Wik1i.php';
                 } else {
                     $configImport['path'] = 'https://import.hamichlol.org.il/';
