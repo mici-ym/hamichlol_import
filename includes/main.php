@@ -6,7 +6,8 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Hook\ParserFirstCallInitHook;
-use Parser;
+use MediaWiki\Parser\ParserOutput;
+use ParserOutput as GlobalParserOutput;
 
 use function PHPSTORM_META\type;
 
@@ -38,22 +39,15 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
         return true;
     }
 
-    public function renderWikipediaData(Parser $parser, $title, $revid)
+    public function renderWikipediaData(Parser $parser, $title)
     {
-        wfDebugLog('hamichlol_import', 'Rendering wikipedia data for ' . $title . ' rev ' . $revid);
+        wfDebugLog('hamichlol_import', 'Rendering wikipedia data for ' . $title);
         $output = $parser->getOutput();
         if (!$title) {
             return true;
         }
         $output->setPageProperty('wikipediaName', $title);
-        $wikipediaData = [
-            'name' => $title,
-        ];
-        if ($revid && is_numeric($revid)) {
-            $wikipediaData['revupdate'] = $revid;
-        }
-        wfDebugLog('hamichlol_import', 'Wikipedia data: ' . print_r($wikipediaData, true));
-        $output->setExtensionData('wikipediaData', $wikipediaData);
+
         return true;
     }
     public function onBeforePageDisplay($out, $skin): void
@@ -85,11 +79,5 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
         }
 
         $out->addJsConfigVars('importConfig', $configImport);
-
-        $wikipediaName = $skin->getOutput()->getProperty('wikipediaName');
-        if ($wikipediaName) {
-            $out->addJsConfigVars('importConfig', ['nameOfWikipedia' => $wikipediaName]);
-        }
-        wfDebugLog('hamichlol_import', 'Config Import: '.$wikipediaName);
     }
 }
