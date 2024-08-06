@@ -5,10 +5,10 @@
         ]
     },
     "hamichlol_import": "הרחבה לייבוא מוויקיפדיה העברית.",
-    "Prefs-importAndUpdate": "ייבוא ועדכון",
-    "Prefs-config": "הגדרות כלליות",
-    "Path-of-requests": "נתיב לשאילתות בוויקיפדיה העברית",
-    "Get-from-wikipedia": "גישה ישירה",
-    "Get-from-proxi": "שרת עוקף (פרוקסי)",
-    "Get-from-filter-bypass": "עוקף סינון"
+    "prefs-importAndUpdate": "ייבוא ועדכון",
+    "prefs-config": "הגדרות כלליות",
+    "path-of-requests": "נתיב לשאילתות בוויקיפדיה העברית",
+    "get-from-wikipedia": "גישה ישירה",
+    "get-from-proxi": "שרת עוקף (פרוקסי)",
+    "get-from-filter-bypass": "עוקף סינון"
 }

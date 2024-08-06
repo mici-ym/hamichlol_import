@@ -41,7 +41,6 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
 
     public function renderWikipediaData(Parser $parser, $title)
     {
-        wfDebugLog('hamichlol_import', 'Rendering wikipedia data for ' . $title);
         $output = $parser->getOutput();
         if (!$title) {
             return true;
