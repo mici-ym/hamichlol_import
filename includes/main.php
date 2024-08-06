@@ -2,17 +2,23 @@
 
 namespace MediaWiki\Extension\hamichlol_import;
 
+use Parser;
+use WANObjectCache;
+use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Hook\ParserFirstCallInitHook;
-use MediaWiki\Parser\ParserOutput;
-use ParserOutput as GlobalParserOutput;
-
-use function PHPSTORM_META\type;
 
 class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCallInitHook
 {
+    private WANObjectCache $cache;
+    private $pageCacheKey = null;
+
+    public function __construct() {
+        $service = MediaWikiServices::getInstance();
+        $this->cache = $service->getMainWANObjectCache();
+    }
 
     public function onGetPreferences($user, &$preferences)
     {
@@ -36,7 +42,6 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
     public function onParserFirstCallInit($parser)
     {
         $parser->setFunctionHook('sortwikipedia', [$this, 'renderWikipediaData']);
-        return true;
     }
 
     public function renderWikipediaData(Parser $parser, $title)
@@ -78,5 +83,15 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
         }
 
         $out->addJsConfigVars('importConfig', $configImport);
+    }
+
+    private function createCacheKey($cacheKey) {
+        if (!$cacheKey) {
+            throw new InvalidArgumentException( 'Title or id is not set' );
+        }/*
+        if ( $cacheKey>isSpecialPage()) {
+            throw new InvalidArgumentException('is a special page' );
+        }*/
+        $this->pageCacheKey = $this->cache->makeKey('wikipedia_data', $cacheKey);
     }
 }
