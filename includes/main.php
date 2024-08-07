@@ -6,10 +6,8 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Hook\ParserFirstCallInitHook;
-use MediaWiki\Parser\ParserOutput;
-use ParserOutput as GlobalParserOutput;
+use Parser;
 
-use function PHPSTORM_META\type;
 
 class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCallInitHook
 {
@@ -47,7 +45,7 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
         }
         $output->setPageProperty('wikipediaName', $title);
 
-        return true;
+        return '';
     }
     public function onBeforePageDisplay($out, $skin): void
     {
