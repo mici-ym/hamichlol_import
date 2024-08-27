@@ -9,6 +9,6 @@
     "prefs-config": "הגדרות כלליות",
     "path-of-requests": "נתיב לשאילתות בוויקיפדיה העברית",
     "get-from-wikipedia": "גישה ישירה",
-    "get-from-proxi": "שרת עוקף (פרוקסי)",
+    "get-from-proxy": "שרת עוקף (פרוקסי)",
     "get-from-filter-bypass": "עוקף סינון"
 }

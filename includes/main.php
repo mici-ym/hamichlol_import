@@ -16,7 +16,7 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
     {
         $options = [
             'get-from-wikipedia' => 0,
-            'get-from-proxi' => 1,
+            'get-from-proxy' => 1,
         ];
         if ($user->isAllowed('delete') && $user->isAllowed('aspaklarya_lockdown')) {
             $options['get-from-filter-bypass'] = 2;
@@ -53,7 +53,7 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
         $user = $out->getUser();
         $pathImport = $services->getUserOptionsLookup()->getOption($user, 'path-import');
         $configImport = [
-            'proxi' => $pathImport,
+            'proxy' => $pathImport,
         ];
         switch ($pathImport) {
             case 0:
