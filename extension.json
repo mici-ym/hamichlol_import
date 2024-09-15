@@ -14,7 +14,7 @@
     "hamichlol_import": ["i18n"]
   },
   "ExtensionMessagesFiles": {
-    "hamichlol_importMagicWords": "hamichlol_import.i18n.magic.php"
+    "hamichlol_importMagicWords": "hamichlol_import.i18n.php"
   },
   "AutoloadNamespaces": {
     "MediaWiki\\Extension\\hamichlol_import\\": "includes/"

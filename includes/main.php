@@ -6,10 +6,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Hook\ParserFirstCallInitHook;
-use MediaWiki\Parser\ParserOutput;
-use ParserOutput as GlobalParserOutput;
-
-use function PHPSTORM_META\type;
+use Parser;
 
 class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCallInitHook
 {
@@ -36,19 +33,14 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
     public function onParserFirstCallInit($parser)
     {
         $parser->setFunctionHook('sortwikipedia', [$this, 'renderWikipediaData']);
-        return true;
     }
 
     public function renderWikipediaData(Parser $parser, $title)
     {
-        wfDebugLog('hamichlol_import', 'Rendering wikipedia data for ' . $title);
+        wfDebugLog("hamichlol_import", "Rendering wikipedia data for $title");
         $output = $parser->getOutput();
-        if (!$title) {
-            return true;
-        }
         $output->setPageProperty('wikipediaName', $title);
-
-        return true;
+        return '';
     }
     public function onBeforePageDisplay($out, $skin): void
     {
@@ -79,5 +71,16 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
         }
 
         $out->addJsConfigVars('importConfig', $configImport);
+        if (!$out->getTitle()->isSpecialPage()) {
+            return;
+        }
+        wfDebugLog('hamichlol_import', "isSpecialPage: " . $out->getTitle()->isSpecialPage());
+        $parserOutput = $skin->getWikiPage()->getParserOutput();
+        if ($parserOutput) {
+            $wikipediaName = $parserOutput->getPageProperty('wikipediaName');
+            if ($wikipediaName) {
+                $out->addJsConfigVars('wikipediaName', $wikipediaName);
+            }
+        }
     }
 }
