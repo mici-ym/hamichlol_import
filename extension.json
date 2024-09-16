@@ -22,6 +22,7 @@
   "Hooks": {
     "GetPreferences": "main",
     "BeforePageDisplay": "main",
+    "OutputPageParserOutput": "main",
     "ParserFirstCallInit": "main"
     },
   "HookHandlers": {

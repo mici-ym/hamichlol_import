@@ -6,9 +6,12 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Hook\ParserFirstCallInitHook;
+use MediaWiki\Hook\OutputPageParserOutputHook;
 use Parser;
+use MediaWiki\Output\OutputPage;
+use ParserOutput;
 
-class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCallInitHook
+class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCallInitHook, OutputPageParserOutputHook
 {
 
     public function onGetPreferences($user, &$preferences)
@@ -32,15 +35,35 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
 
     public function onParserFirstCallInit($parser)
     {
-        $parser->setFunctionHook('sortwikipedia', [$this, 'renderWikipediaData']);
+        $parser->setFunctionHook('importdata', [$this, 'renderImportData']);
     }
 
-    public function renderWikipediaData(Parser $parser, $title)
+    public function renderImportData(Parser $parser, ...$params)
     {
-        wfDebugLog("hamichlol_import", "Rendering wikipedia data for $title");
+        if (!$params) {
+            return '';
+        }
+        $title = $params[0];
         $output = $parser->getOutput();
-        $output->setPageProperty('wikipediaName', $title);
+        $output->setPageProperty('importName', $title);
+        $updatervid = $params[1]?? null;
+        if ($updatervid) {
+            $output->setExtensionData('importUpdatervid', $updatervid);
+        }
         return '';
+    }
+
+    /**
+     * @param OutputPage $outputPage
+     * @param ParserOutput $parserOutput
+     */
+    public function onOutputPageParserOutput( $outputPage, $parserOutput ): void {
+        $importName = $parserOutput->getPageProperty('importName');
+        $outputPage->setProperty('importData', $importName);
+        $updatervid = $parserOutput->getExtensionData('importUpdatervid');
+        if ($updatervid) {
+            $outputPage->setProperty('updatervid', $updatervid);
+        }
     }
     public function onBeforePageDisplay($out, $skin): void
     {
@@ -71,16 +94,20 @@ class main implements GetPreferencesHook, BeforePageDisplayHook, ParserFirstCall
         }
 
         $out->addJsConfigVars('importConfig', $configImport);
-        if (!$out->getTitle()->isSpecialPage()) {
+
+        if ($out->getTitle()->isSpecialPage() || !$out->getTitle()->isNewPage()) {
             return;
         }
-        wfDebugLog('hamichlol_import', "isSpecialPage: " . $out->getTitle()->isSpecialPage());
-        $parserOutput = $skin->getWikiPage()->getParserOutput();
-        if ($parserOutput) {
-            $wikipediaName = $parserOutput->getPageProperty('wikipediaName');
-            if ($wikipediaName) {
-                $out->addJsConfigVars('wikipediaName', $wikipediaName);
-            }
+        $importData = [];
+        $importName = $out->getProperty('importData') ?? $skin->getWikiPage()->getParserOutput()->getPageProperty('importName');
+        if ($importName) {
+           $importData['name'] = $importName;
         }
+        $updatervid = $out->getProperty('updatervid');
+        if ($updatervid) {
+            $importData['updatervid'] = $updatervid;
+        }
+        $out->addJsConfigVars('importData', $importData);
+        
     }
 }

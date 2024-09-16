@@ -3,9 +3,9 @@
 $magicWords = [];
 
 $magicWords['en'] = [
-    'sortwikipedia' => [0, 'sortwikipedia']
+    'importdata' => [0, 'importdata']
 ];
 
 $magicWords['he'] = [
-    'sortwikipedia' => [0, 'sortwikipedia']
+    'importdata' => [0, 'importdata']
 ];
